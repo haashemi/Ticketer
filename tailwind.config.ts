@@ -1,7 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
-	theme: {},
+	theme: {
+		extend: {
+			fontFamily: {
+				silk: ['Silkscreen', 'sans-serif'],
+				poppins: ['Poppins', 'sans-serif'],
+			},
+		},
+	},
 
 	daisyui: {
 		themes: false, // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
