@@ -1,0 +1,3 @@
+api_addr: localhost:4323
+
+database: postgres://postgres:postgres@localhost:5432/ticketer?sslmode=disable
