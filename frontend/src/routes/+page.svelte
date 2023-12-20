@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/Header.svelte';
+	import Container from '$lib/Container.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -7,7 +8,7 @@
 
 <Header />
 
-<main class="container mx-auto px-5">
+<Container>
 	<!-- Header -->
 	<div class="my-14 flex w-full flex-col items-center gap-3">
 		<h2 class="text-4xl font-semibold italic text-slate-50">#1 Event ticket store</h2>
@@ -34,6 +35,6 @@
 			</a>
 		{/each}
 	</div>
-</main>
+</Container>
 
 <footer class="mt-10 flex h-11 items-center justify-center border-t border-base-300">Copyright Ticketer, no rights reserved at all.</footer>

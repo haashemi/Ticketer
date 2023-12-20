@@ -5,16 +5,16 @@
 		<form class="flex w-full flex-col gap-3">
 			<label class="form-control w-full max-w-xs">
 				<div class="label">
-					<span class="label-text">EMail</span>
+					<span class="label-text">Email</span>
 				</div>
-				<input type="email" placeholder="username@gmail.com" class="input input-bordered w-full max-w-xs" />
+				<input required type="email" placeholder="username@gmail.com" class="input input-bordered w-full max-w-xs" />
 			</label>
 
 			<label class="form-control w-full max-w-xs">
 				<div class="label">
 					<span class="label-text">Password</span>
 				</div>
-				<input type="password" placeholder="********" class="input input-bordered w-full max-w-xs" />
+				<input required type="password" placeholder="********" class="input input-bordered w-full max-w-xs" />
 			</label>
 
 			<div class="flex justify-end">
