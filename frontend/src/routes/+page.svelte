@@ -8,33 +8,42 @@
 
 <Header />
 
-<Container>
-	<!-- Header -->
-	<div class="my-14 flex w-full flex-col items-center gap-3">
-		<h2 class="text-4xl font-semibold italic text-slate-50">#1 Event ticket store</h2>
-		<p class="text-sm text-slate-500">Get the newest events' ticket from Ticketer!</p>
+<div
+	class="container absolute left-0 right-0 top-0 -z-10 mx-auto h-2/3 w-full bg-cover bg-bottom bg-no-repeat"
+	style="
+		background-image: 
+			linear-gradient(to right, var(--fallback-b1,oklch(var(--b1))), transparent 70%, var(--fallback-b1,oklch(var(--b1)))), 
+			linear-gradient(to top, var(--fallback-b1,oklch(var(--b1))), transparent),
+			url('/images/theater.png');
+	"
+/>
+
+<Container class="font-poppins">
+	<!-- Gonde Goozi header -->
+	<div class="flex w-full flex-col items-start justify-center gap-5 py-24 md:py-40">
+		<h2 class="text-3xl italic text-slate-50 md:text-5xl">#1 Ticket marketplace</h2>
+		<p class="pl-3 text-sm text-slate-500">Get the newest movies' ticket from Ticketer!</p>
 	</div>
 
-	<!-- Events list -->
-	<h3 class="font-poppins my-3 text-lg italic">Latest Events:</h3>
-	<div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
-		{#each data.events as event}
-			<a
-				href="/event/{event.id}"
-				class="card aspect-video overflow-hidden bg-base-200 bg-cover shadow-md transition-transform ease-in-out hover:-translate-y-2"
-				style="background-image: url('https://cataas.com/cat/cute?id={event.id}');"
-			>
-				<div class="card-body flex flex-col justify-end gap-4 bg-gradient-to-b from-transparent to-black text-white">
-					<h2 class="font-poppins card-title whitespace-nowrap text-2xl italic sm:text-3xl">{event.name}</h2>
+	<!-- Movies list -->
+	<h3 class="mb-7 text-lg italic">This week's movies:</h3>
+	<div class="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+		{#each data.movies as movie}
+			<div class="transition-transform duration-500 ease-in-out hover:-translate-y-2">
+				<a
+					href="/movie/{movie.id}"
+					class="bg-base-200 flex aspect-[3/4] items-end justify-center overflow-hidden rounded-2xl bg-cover"
+					style="background-image: linear-gradient(to top, black, transparent 60%), url('/images/movie-cover ({movie.id}).jpg');"
+				>
+					<h6 class="whitespace-nowrap rounded-xl p-2 text-lg font-medium text-white">
+						{movie.name}
+					</h6>
+				</a>
 
-					<div class="card-actions items-center justify-between">
-						<p class="text-base text-accent sm:text-lg">{event.price} IRT</p>
-						<button class="btn btn-accent btn-sm">Book a Ticket</button>
-					</div>
-				</div>
-			</a>
+				<p class="px-3"><span class="text-sm opacity-50">Premieres At:</span> 15:30</p>
+			</div>
 		{/each}
 	</div>
 </Container>
 
-<footer class="mt-10 flex h-11 items-center justify-center border-t border-base-300">Copyright Ticketer, no rights reserved at all.</footer>
+<footer class="border-base-300 mt-10 flex h-11 items-center justify-center border-t">Copyright Ticketer, no rights reserved at all.</footer>
