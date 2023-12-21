@@ -1,5 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;1,500&family=Silkscreen&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:700|Poppins:500|Poppins:400|Silkscreen:400');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+	color-scheme: dark;
+}
+
+body {
+	font-family: 'Poppins';
+	font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-family: 'Poppins';
+	font-weight: 700;
+}
+
+html {
+	font-size: 100%;
+} /* 16px */
+
+h1 {
+	font-size: 4.21rem; /* 67.36px */
+}
+
+h2 {
+	font-size: 3.158rem; /* 50.56px */
+}
+
+h3 {
+	font-size: 2.369rem; /* 37.92px */
+}
+
+h4 {
+	font-size: 1.777rem; /* 28.48px */
+}
+
+h5 {
+	font-size: 1.333rem; /* 21.28px */
+}
+
+small {
+	font-size: 0.75rem; /* 12px */
+}
