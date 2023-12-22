@@ -1,5 +1,7 @@
-<main class="flex min-h-screen items-center justify-center">
-	<div class="flex w-80 flex-col items-center justify-center gap-6 rounded-xl border border-slate-700 p-7">
+<div class="absolute left-1/2 top-1/2 -z-10 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-900 blur-3xl" />
+
+<main class="flex min-h-screen items-center justify-center bg-black/80 backdrop-blur-xl">
+	<div class="flex flex-col items-center justify-center gap-6 rounded-xl border border-slate-700 p-10">
 		<h1 class="text-2xl font-semibold">Welcome Back!</h1>
 
 		<form class="flex w-full flex-col gap-3">
@@ -22,6 +24,6 @@
 			</div>
 		</form>
 
-		<p>Don't have an account? <a class="text-secondary" href="/signup">Sign Up!</a></p>
+		<p>Don't have an account? <a class="text-primary" href="/signup">Sign Up!</a></p>
 	</div>
 </main>

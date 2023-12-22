@@ -19,7 +19,7 @@
 />
 
 <Container class="font-poppins">
-	<!-- Gonde Goozi header -->
+	<!-- Header -->
 	<div class="flex w-full flex-col items-start justify-center gap-5 py-24 md:py-40">
 		<h2 class="text-3xl italic text-slate-50 md:text-5xl">#1 Ticket marketplace</h2>
 		<p class="pl-3 text-sm text-slate-500">Get the newest movies' ticket from Ticketer!</p>
