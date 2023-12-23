@@ -4,6 +4,7 @@ go 1.21.5
 
 require (
 	github.com/go-playground/validator v9.31.0+incompatible
+	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/jackc/pgx/v5 v5.5.1
 	github.com/kataras/iris/v12 v12.2.8
 	github.com/lib/pq v1.10.9
