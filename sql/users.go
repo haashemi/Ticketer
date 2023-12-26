@@ -20,3 +20,14 @@ func SelectUserEssentials(ctx context.Context, db Querier, email string) (data U
 	err = pgxscan.Get(ctx, db, &data, `select full_name, password from users where email = $1`, email)
 	return
 }
+
+type User struct {
+	Name    string `json:"name" db:"full_name"`
+	Email   string `json:"email" db:"email"`
+	IsAdmin bool   `json:"isAdmin" db:"is_admin"`
+}
+
+func SelectUser(ctx context.Context, db Querier, id int64) (data User, err error) {
+	err = pgxscan.Get(ctx, db, &data, `select full_name, email, is_admin from users where id = $1`, id)
+	return
+}
