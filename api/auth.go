@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/hex"
 	"errors"
-	"net/http"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -60,32 +59,32 @@ type SignInBody struct {
 func (a *API) SignIn(ctx iris.Context) {
 	var body SignInBody
 	if err := ctx.ReadJSON(&body); err != nil {
-		ctx.StopWithError(iris.StatusBadRequest, err)
+		ctx.StopWithJSON(iris.StatusBadRequest, NewError("Request is not valid", err))
 		return
 	}
 
 	user, err := sql.SelectUserEssentials(ctx, a.db, body.Email)
 	if err != nil {
 		if err.Error() == "" {
-			ctx.StopWithText(iris.StatusForbidden, "Invalid username or password")
+			ctx.StopWithJSON(iris.StatusForbidden, NewError("Invalid username or password", nil))
 			return
 		}
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-in, please try again later.", err))
 		return
 	}
 
 	hashedPassword, err := hex.DecodeString(user.Password)
 	if err != nil {
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-in, please try again later.", err))
 		return
 	}
 
 	if err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(body.Password)); err != nil {
 		if err == bcrypt.ErrMismatchedHashAndPassword {
-			ctx.StopWithText(iris.StatusForbidden, "Invalid username or password")
+			ctx.StopWithJSON(iris.StatusForbidden, NewError("Invalid username or password", nil))
 			return
 		}
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-in, please try again later.", err))
 		return
 	}
 
@@ -101,13 +100,13 @@ type SignUpBody struct {
 func (a *API) SignUp(ctx iris.Context) {
 	var body SignUpBody
 	if err := ctx.ReadJSON(&body); err != nil {
-		ctx.StopWithError(iris.StatusBadRequest, err)
+		ctx.StopWithJSON(iris.StatusBadRequest, NewError("Request is not valid", err))
 		return
 	}
 
 	password, err := bcrypt.GenerateFromPassword([]byte(body.Password), 14)
 	if err != nil {
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-up, please try again later.", err))
 		return
 	}
 
@@ -115,16 +114,16 @@ func (a *API) SignUp(ctx iris.Context) {
 	if err != nil {
 		// ToDo: find a better way, I have no idea why I'm doing it this way. I'm so sorry. forgive me please.
 		if err.Error() == `scanning one: scany: rows final error: ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)` {
-			ctx.StopWithText(iris.StatusConflict, "Email already exists. try to sign-in or use another email.")
+			ctx.StopWithJSON(iris.StatusForbidden, NewError("Email already exists. try to sign-in or use another email.", nil))
 			return
 		}
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-up, please try again later.", err))
 		return
 	}
 
 	token, err := a.newToken(id, false)
 	if err != nil {
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-up, please try again later.", err))
 		return
 	}
 
@@ -149,13 +148,13 @@ func (a *API) doCheckAuth(ctx iris.Context) {
 		jwt.WithAudience(a.conf.Host),
 	)
 	if err != nil {
-		ctx.StopWithError(iris.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Auth check failed", err))
 		return
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok {
-		ctx.StopWithError(iris.StatusBadRequest, ErrInvalidClaims)
+		ctx.StopWithJSON(iris.StatusBadRequest, NewError("Auth check failed", ErrInvalidClaims))
 		return
 	}
 
@@ -165,12 +164,13 @@ func (a *API) doCheckAuth(ctx iris.Context) {
 	// ToDo: make sure that the user is not banned
 
 	ctx.Values().Set("claims", claims)
+	ctx.Next()
 }
 
 func (a *API) doRefreshToken(ctx iris.Context) {
 	claims, ok := ctx.Values().Get("claims").(*Claims)
 	if !ok {
-		ctx.StopWithError(iris.StatusInternalServerError, ErrClaimsNotInContext)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Token validation failed.", ErrClaimsNotInContext))
 		return
 	}
 
@@ -181,7 +181,7 @@ func (a *API) doRefreshToken(ctx iris.Context) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString([]byte(a.conf.JWTKey))
 	if err != nil {
-		ctx.StopWithError(http.StatusInternalServerError, err)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Token validation failed.", err))
 		return
 	}
 
@@ -193,10 +193,10 @@ func (a *API) doRefreshToken(ctx iris.Context) {
 func (a *API) doCheckAdmin(ctx iris.Context) {
 	claims, ok := ctx.Values().Get("claims").(*Claims)
 	if !ok {
-		ctx.StopWithError(iris.StatusInternalServerError, ErrClaimsNotInContext)
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Token check failed.", ErrClaimsNotInContext))
 		return
 	} else if claims.IsAdmin {
-		ctx.StopWithError(iris.StatusForbidden, ErrNotAdmin)
+		ctx.StopWithJSON(iris.StatusForbidden, NewError("Insufficient permissions.", ErrNotAdmin))
 		return
 	}
 	ctx.Next()
