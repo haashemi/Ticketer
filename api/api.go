@@ -38,11 +38,11 @@ func Run(conf *config.Config, db *sql.Connection) {
 	protected := app.Party("/api", api.doCheckAuth, api.doRefreshToken)
 	{
 		protected.Get("/tickets/reserve", NotImplemented)
-		protected.Get("/profile", NotImplemented)
+		protected.Get("/profile", api.GetProfile)
 		protected.Get("/profile/tickets", NotImplemented)
 	}
 
-	adminOnly := app.Party("/api", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
+	adminOnly := app.Party("/api/admin", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
 	{
 		adminOnly.Post("/movies", NotImplemented)
 		adminOnly.Patch("/movies", NotImplemented)
@@ -52,7 +52,7 @@ func Run(conf *config.Config, db *sql.Connection) {
 		adminOnly.Patch("/users", NotImplemented)
 	}
 
-	target, _ := url.Parse("http://localhost:4173")
+	target, _ := url.Parse("http://localhost:5173")
 	proxy := host.ProxyHandler(target, nil)
 
 	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) { proxy.ServeHTTP(ctx.ResponseWriter(), ctx.Request()) })
