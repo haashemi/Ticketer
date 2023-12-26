@@ -13,14 +13,20 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
-		"daisyui": "4.4.23"
+		"@felte/reporter-svelte": "1.1.11",
+		"@felte/validator-zod": "1.0.17",
+		"@tanstack/svelte-query": "5.14.6",
+		"daisyui": "4.4.24",
+		"felte": "1.2.12",
+		"ky": "1.1.3",
+		"zod": "3.22.4"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "3.0.1",
-		"@sveltejs/kit": "2.0.4",
+		"@sveltejs/kit": "2.0.6",
 		"@sveltejs/vite-plugin-svelte": "3.0.1",
-		"@typescript-eslint/eslint-plugin": "6.15.0",
-		"@typescript-eslint/parser": "6.15.0",
+		"@typescript-eslint/eslint-plugin": "6.16.0",
+		"@typescript-eslint/parser": "6.16.0",
 		"autoprefixer": "10.4.16",
 		"eslint": "8.56.0",
 		"eslint-config-prettier": "9.1.0",
