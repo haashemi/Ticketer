@@ -7,6 +7,9 @@
 		defaultOptions: {
 			queries: {
 				enabled: browser,
+				refetchOnMount: false,
+				refetchOnWindowFocus: false,
+				retry: 0,
 			},
 		},
 	});

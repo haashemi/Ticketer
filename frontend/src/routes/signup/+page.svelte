@@ -20,16 +20,9 @@
 		onSubmit: async (v: z.infer<typeof schema>) => {
 			loading = true;
 			ky.post('/api/auth/sign-up', { json: v })
-				.then(() => {
-					goto('/');
-				})
-				.catch((e) => {
-					console.log(e as HTTPError);
-					(e as HTTPError).response.text().then((v) => (error = v));
-				})
-				.finally(() => {
-					loading = false;
-				});
+				.then(() => goto('/'))
+				.catch((e) => (e as HTTPError).response.json().then((v) => (error = v.message)))
+				.finally(() => (loading = false));
 		},
 	});
 </script>
