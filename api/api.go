@@ -1,10 +1,13 @@
 package api
 
 import (
+	"net/url"
+
 	"github.com/go-playground/validator"
 	"github.com/haashemi/Ticketer/internal/config"
 	"github.com/haashemi/Ticketer/sql"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/core/host"
 )
 
 type API struct {
@@ -13,7 +16,7 @@ type API struct {
 }
 
 func Run(conf *config.Config, db *sql.Connection) {
-	// api := &API{db: db, conf: conf}
+	api := &API{db: db, conf: conf}
 
 	app := iris.Default()
 	app.Validator = validator.New()
@@ -21,36 +24,38 @@ func Run(conf *config.Config, db *sql.Connection) {
 
 	auth := app.Party("/api/auth")
 	{
-		auth.Post("/login", NotImplemented)
-		auth.Post("/logout", NotImplemented)
-		auth.Post("/refresh", NotImplemented)
+		auth.Post("/sign-in", api.SignIn) // ToDo
+		auth.Post("/sign-up", api.SignUp) // ToDo
+		auth.Post("/sign-out", api.SignOut)
 	}
 
-	movies := app.Party("/api/movies")
+	public := app.Party("/api")
 	{
-		movies.Get("/", NotImplemented)
-		movies.Get("/{id:number}", NotImplemented)
-		movies.Post("/", NotImplemented)
-		movies.Patch("/", NotImplemented)
-		movies.Delete("/", NotImplemented)
+		public.Get("/movies", api.GetMovies)
+		public.Get("/movies/{id:number}", api.GetMovie)
 	}
 
-	tickets := app.Party("/api/tickets")
+	protected := app.Party("/api", api.doCheckAuth, api.doRefreshToken)
 	{
-		tickets.Get("/reserve", NotImplemented)
+		protected.Get("/tickets/reserve", NotImplemented)
+		protected.Get("/profile", NotImplemented)
+		protected.Get("/profile/tickets", NotImplemented)
 	}
 
-	users := app.Party("/users")
+	adminOnly := app.Party("/api", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
 	{
-		users.Get("/", NotImplemented)
-		users.Patch("/", NotImplemented)
+		adminOnly.Post("/movies", NotImplemented)
+		adminOnly.Patch("/movies", NotImplemented)
+		adminOnly.Delete("/movies", NotImplemented)
+
+		adminOnly.Get("/users", NotImplemented)
+		adminOnly.Patch("/users", NotImplemented)
 	}
 
-	profile := app.Party("/api/profile")
-	{
-		profile.Get("/", NotImplemented)
-		profile.Get("/tickets", NotImplemented)
-	}
+	target, _ := url.Parse("http://localhost:4173")
+	proxy := host.ProxyHandler(target, nil)
+
+	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) { proxy.ServeHTTP(ctx.ResponseWriter(), ctx.Request()) })
 
 	app.Listen(conf.APIAddr)
 }
