@@ -24,22 +24,22 @@ func Run(conf *config.Config, db *sql.Connection) {
 
 	auth := app.Party("/api/auth")
 	{
-		auth.Post("/sign-in", api.SignIn) // ToDo
-		auth.Post("/sign-up", api.SignUp) // ToDo
+		auth.Post("/sign-in", api.SignIn)
+		auth.Post("/sign-up", api.SignUp)
 		auth.Post("/sign-out", api.SignOut)
 	}
 
-	public := app.Party("/api")
+	public := app.Party("/api/public")
 	{
 		public.Get("/movies", api.GetMovies)
 		public.Get("/movies/{id:number}", api.GetMovie)
 	}
 
-	protected := app.Party("/api", api.doCheckAuth, api.doRefreshToken)
+	protected := app.Party("/api/profile", api.doCheckAuth, api.doRefreshToken)
 	{
-		protected.Get("/tickets/reserve", NotImplemented)
-		protected.Get("/profile", api.GetProfile)
-		protected.Get("/profile/tickets", NotImplemented)
+		protected.Get("/", api.GetProfile)
+		protected.Get("/tickets", NotImplemented)
+		protected.Post("/tickets", NotImplemented)
 	}
 
 	adminOnly := app.Party("/api/admin", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
@@ -51,6 +51,8 @@ func Run(conf *config.Config, db *sql.Connection) {
 		adminOnly.Get("/users", NotImplemented)
 		adminOnly.Patch("/users", NotImplemented)
 	}
+
+	app.HandleDir("/static", iris.Dir("./static"))
 
 	target, _ := url.Parse("http://localhost:5173")
 	proxy := host.ProxyHandler(target, nil)
