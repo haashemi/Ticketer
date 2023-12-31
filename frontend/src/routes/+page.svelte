@@ -35,7 +35,7 @@
 					class="bg-base-200 flex aspect-[3/4] items-end justify-center overflow-hidden rounded-2xl bg-cover"
 					style="background-image: linear-gradient(to top, black, transparent 60%), url('/static/movie/{movie.id}.jpg');"
 				>
-					<h6 class="whitespace-nowrap rounded-xl p-2 text-lg font-medium text-white">
+					<h6 class="overflow-hidden text-ellipsis whitespace-nowrap rounded-xl p-2 text-lg font-medium text-white">
 						{movie.name}
 					</h6>
 				</a>
