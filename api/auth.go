@@ -88,6 +88,13 @@ func (a *API) SignIn(ctx iris.Context) {
 		return
 	}
 
+	token, err := a.newToken(user.ID, user.IsAdmin)
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-in, please try again later.", err))
+		return
+	}
+
+	a.setAccessTokenCookie(ctx, token)
 	ctx.JSON(map[string]string{"name": user.FullName})
 }
 

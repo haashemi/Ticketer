@@ -12,12 +12,14 @@ func InsertUser(ctx context.Context, db Querier, name, email, password string) (
 }
 
 type UserEssentials struct {
+	ID       int64  `db:"id"`
 	FullName string `db:"full_name"`
 	Password string `db:"password"`
+	IsAdmin  bool   `db:"is_admin"`
 }
 
 func SelectUserEssentials(ctx context.Context, db Querier, email string) (data UserEssentials, err error) {
-	err = pgxscan.Get(ctx, db, &data, `select full_name, password from users where email = $1`, email)
+	err = pgxscan.Get(ctx, db, &data, `select id, full_name, password, is_admin from users where email = $1`, email)
 	return
 }
 
