@@ -5,8 +5,8 @@ create table if not exists movies (
     genres      text[]          not null                            ,   
     show_time   int2            not null                            ,
     movie_time  int2            not null                            ,   
-    actresses   text[]          not null                            ,   
-    description varchar(512)    not null                            ,   
+    actresses   text[]                                              ,   
+    description varchar(512)                                        ,   
 
     constraint movies_show_time_validation  check (0 <= show_time and show_time < 960)  ,
     constraint movies_movie_time_validation  check (0 <= movie_time and movie_time < 960)
