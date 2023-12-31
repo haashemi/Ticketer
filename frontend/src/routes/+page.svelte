@@ -14,7 +14,7 @@
 		background-image: 
 			linear-gradient(to right, var(--fallback-b1,oklch(var(--b1))), transparent 70%, var(--fallback-b1,oklch(var(--b1)))), 
 			linear-gradient(to top, var(--fallback-b1,oklch(var(--b1))), transparent),
-			url('/images/theater.png');
+			url('/theater.png');
 	"
 />
 
@@ -33,7 +33,7 @@
 				<a
 					href="/movie/{movie.id}"
 					class="bg-base-200 flex aspect-[3/4] items-end justify-center overflow-hidden rounded-2xl bg-cover"
-					style="background-image: linear-gradient(to top, black, transparent 60%), url('/images/movie-cover ({movie.id}).jpg');"
+					style="background-image: linear-gradient(to top, black, transparent 60%), url('/static/movie/{movie.id}.jpg');"
 				>
 					<h6 class="whitespace-nowrap rounded-xl p-2 text-lg font-medium text-white">
 						{movie.name}
