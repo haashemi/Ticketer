@@ -1,6 +1,3 @@
 import moment from 'moment';
 
-export function msToTime(s: number): string {
-	const d = new Date(s / 1000);
-	return moment(d).format('HH:mm');
-}
+export const msToTime = (s: number): string => moment(new Date(s)).format('HH:mm');
