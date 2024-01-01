@@ -4,9 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"embed"
+	"encoding/json"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jackc/pgx/v5/pgtype"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 )
@@ -39,3 +41,7 @@ func Migrate(connString string) error {
 
 	return nil
 }
+
+type Time struct{ pgtype.Time }
+
+func (t *Time) MarshalJSON() ([]byte, error) { return json.Marshal(t.Microseconds / 1000) }
