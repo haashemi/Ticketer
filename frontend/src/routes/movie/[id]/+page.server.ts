@@ -6,8 +6,11 @@ import { API_HOST } from '$env/static/private';
 const schema = z.object({
 	id: z.number(),
 	name: z.string(),
-	time: z.number(),
+	movieTime: z.number(),
 	genres: z.array(z.string()),
+	fromDate: z.string(), // todo: date
+	toDate: z.string(), // todo: date
+	premiereTime: z.number(), // todo: date
 });
 
 export const load: PageServerLoad = async ({ params }) => {

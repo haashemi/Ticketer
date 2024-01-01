@@ -18,13 +18,13 @@
 />
 
 <Container class="font-poppins mt-24 flex flex-col gap-5">
-	<div class="bg-black/55 flex h-56 w-full items-center overflow-hidden rounded-2xl p-3 backdrop-blur-xl">
+	<div class="flex h-56 w-full items-center overflow-hidden rounded-2xl bg-black/55 p-3 backdrop-blur-xl">
 		<img src="/static/movie/{data.id}.jpg" alt={data.name} class="aspect-[3/4] h-full rounded-xl" />
 		<div class="flex h-full flex-col justify-between p-5">
 			<h2 class="card-title whitespace-nowrap text-2xl italic text-white sm:text-3xl">{data.name}</h2>
 
 			<div class=" flex flex-col gap-3">
-				<p>Time: {data.time} minutes</p>
+				<p>Time: {data.movieTime} minutes</p>
 				<p>Genres: {data.genres.join(', ')}</p>
 			</div>
 		</div>
