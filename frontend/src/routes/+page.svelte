@@ -2,6 +2,7 @@
 	import Header from '$lib/Header.svelte';
 	import Container from '$lib/Container.svelte';
 	import type { PageData } from './$types';
+	import { msToTime } from '$lib/utils';
 
 	export let data: PageData;
 </script>
@@ -40,7 +41,7 @@
 					</h6>
 				</a>
 
-				<p class="px-3"><span class="text-sm opacity-50">Premieres At:</span> 15:30</p>
+				<p class="px-3"><span class="text-sm opacity-50">Premieres At:</span> {msToTime(movie.premiereTime)}</p>
 			</div>
 		{/each}
 	</div>
