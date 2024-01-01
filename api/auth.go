@@ -63,7 +63,7 @@ func (a *API) SignIn(ctx iris.Context) {
 		return
 	}
 
-	user, err := sql.SelectUserEssentials(ctx, a.db, body.Email)
+	user, err := sql.SelectUserByEmail(ctx, a.db, body.Email)
 	if err != nil {
 		if err.Error() == "" {
 			ctx.StopWithJSON(iris.StatusForbidden, NewError("Invalid username or password", nil))
