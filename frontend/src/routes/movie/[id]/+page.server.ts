@@ -8,8 +8,8 @@ const schema = z.object({
 	name: z.string(),
 	movieTime: z.number(),
 	genres: z.array(z.string()),
-	fromDate: z.string(), // todo: date
-	toDate: z.string(), // todo: date
+	fromDate: z.coerce.date(), // todo: date
+	toDate: z.coerce.date(), // todo: date
 	premiereTime: z.number(), // todo: date
 });
 
