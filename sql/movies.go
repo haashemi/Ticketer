@@ -33,3 +33,18 @@ func SelectMovie(ctx context.Context, db Querier, id int64) (data Movie, err err
 	err = pgxscan.Get(ctx, db, &data, `select id, name, movie_time, genres, from_date, to_date, premiere_time from movies where id = $1`, id)
 	return
 }
+
+func SelectMovieReservedSeats(ctx context.Context, db Querier, id int64, date time.Time) (data []int8, err error) {
+	data = []int8{}
+	err = pgxscan.Select(ctx, db, &data, `
+		select 
+			s.seat_number 
+		from 
+			tickets t 
+			left join seats s on s.ticket_id = t.id
+		where
+			t.movie_id = $1
+			and t.premiere_date = $2
+	`, id, date)
+	return
+}

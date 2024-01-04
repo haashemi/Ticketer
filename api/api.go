@@ -33,6 +33,7 @@ func Run(conf *config.Config, db *sql.Connection) {
 	{
 		public.Get("/movies", api.GetMovies)
 		public.Get("/movies/{id:number}", api.GetMovie)
+		public.Get("/movies/{id:number}/reserved-seats/{date:date}", api.GetMovieReservedSeats)
 	}
 
 	protected := app.Party("/api/profile", api.doCheckAuth, api.doRefreshToken)
