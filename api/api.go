@@ -39,19 +39,20 @@ func Run(conf *config.Config, db *sql.Connection) {
 	protected := app.Party("/api/profile", api.doCheckAuth, api.doRefreshToken)
 	{
 		protected.Get("/", api.GetProfile)
-		protected.Get("/tickets", NotImplemented)
-		protected.Post("/tickets", NotImplemented)
+		protected.Get("/ticket/{id:number}", api.GetTicket)
+		protected.Get("/tickets", api.GetTickets)
+		protected.Post("/tickets/reserve", api.PostReserveTickets)
 	}
 
-	adminOnly := app.Party("/api/admin", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
-	{
-		adminOnly.Post("/movies", NotImplemented)
-		adminOnly.Patch("/movies", NotImplemented)
-		adminOnly.Delete("/movies", NotImplemented)
+	// adminOnly := app.Party("/api/admin", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
+	// {
+	// 	adminOnly.Post("/movies", NotImplemented)
+	// 	adminOnly.Patch("/movies", NotImplemented)
+	// 	adminOnly.Delete("/movies", NotImplemented)
 
-		adminOnly.Get("/users", NotImplemented)
-		adminOnly.Patch("/users", NotImplemented)
-	}
+	// 	adminOnly.Get("/users", NotImplemented)
+	// 	adminOnly.Patch("/users", NotImplemented)
+	// }
 
 	app.HandleDir("/static", iris.Dir("./static"))
 
@@ -62,5 +63,3 @@ func Run(conf *config.Config, db *sql.Connection) {
 
 	app.Listen(conf.APIAddr)
 }
-
-func NotImplemented(ctx iris.Context) { ctx.StatusCode(iris.StatusNotImplemented) }

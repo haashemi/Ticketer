@@ -50,7 +50,7 @@ func (a *API) GetMovieReservedSeats(ctx iris.Context) {
 
 	reservedSeats, err := sql.SelectMovieReservedSeats(ctx, a.db, mid, date)
 	if err != nil {
-		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch movie, please try again later.", err))
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch reserved seats, please try again later.", err))
 		return
 	}
 
