@@ -94,9 +94,9 @@
 			{#each new Array(120) as _, idx}
 				{@const isReserved = $query.data?.reservedSeats.includes(idx)}
 				{@const isSelected = selectedSeats.includes(idx)}
-				<button disabled={isReserved} on:click={() => toggleSeat(idx)} class="btn btn-primary h-full w-full {isSelected ? '' : 'btn-outline'}"
-					>💺</button
-				>
+				<button disabled={isReserved} on:click={() => toggleSeat(idx)} class="btn btn-primary h-full w-full {isSelected ? '' : 'btn-outline'}">
+					{idx + 1}
+				</button>
 			{/each}
 		</fieldset>
 	</div>
