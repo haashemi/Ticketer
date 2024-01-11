@@ -3,8 +3,30 @@
 	import Header from '$lib/Header.svelte';
 	import moment from 'moment';
 	import type { PageData } from './$types';
+	import * as z from 'zod';
+	import { createQuery } from '@tanstack/svelte-query';
+	import ky from 'ky';
 
 	export let data: PageData;
+
+	let currentDate: Date = getDateAfter(1);
+	let selectedSeats: number[] = [];
+	let isLoading: boolean = false;
+
+	const schema = z.object({ reservedSeats: z.array(z.number()) });
+
+	const query = createQuery({
+		queryKey: ['reservedSeats', data.id, currentDate],
+		queryFn: async () => {
+			const resp = await ky.get(`/api/public/movies/${data.id}/reserved-seats/${moment(currentDate).format('YYYY/MM/DD')}`).json();
+			return schema.parse(resp);
+		},
+		refetchInterval: 30_000,
+	});
+
+	function reserveSeats() {
+		// ky.post("/tickets/reserve", )
+	}
 
 	function getDateAfter(day: number): Date {
 		const d = new Date();
@@ -12,7 +34,24 @@
 		return d;
 	}
 
-	let currentDate: Date = getDateAfter(1);
+	function selectDate(date: Date) {
+		currentDate = date;
+		selectedSeats = [];
+		$query.refetch();
+	}
+
+	function toggleSeat(seatId: number) {
+		const index = selectedSeats.indexOf(seatId);
+		console.log(seatId, index);
+		if (index > -1) {
+			selectedSeats.splice(index, 1);
+			selectedSeats = [...selectedSeats]; //just make a copy
+		} else {
+			selectedSeats = [...selectedSeats, seatId];
+		}
+	}
+
+	$: console.log(selectedSeats);
 </script>
 
 <Header />
@@ -39,21 +78,33 @@
 		</div>
 	</div>
 
-	<div class="flex gap-4 overflow-x-auto rounded-xl bg-zinc-900/55 p-4 backdrop-blur-xl">
+	<fieldset
+		disabled={isLoading || $query.fetchStatus === 'fetching'}
+		class="flex min-w-0 gap-4 overflow-x-auto rounded-xl bg-zinc-900/55 p-4 backdrop-blur-xl"
+	>
 		{#each new Array(7) as _, idx}
 			{@const day = getDateAfter(idx + 1)}
 			{@const isSelected = currentDate.getDate() === day.getDate()}
-			<button class="btn btn-primary {isSelected ? '' : 'btn-outline'}" on:click={() => (currentDate = day)}
-				>{moment(day).format('MMM Do')}</button
-			>
+			<button class="btn btn-primary {isSelected ? '' : 'btn-outline'}" on:click={() => selectDate(day)}>{moment(day).format('MMM Do')}</button>
 		{/each}
-	</div>
+	</fieldset>
 
 	<div class="flex items-center justify-center rounded-xl bg-zinc-900/55 p-6 backdrop-blur-xl">
-		<div class="grid w-full max-w-[40rem] grid-cols-8 grid-rows-10 gap-3">
-			{#each new Array(120) as _}
-				<button class="btn btn-primary btn-outline h-full w-full">💺</button>
+		<fieldset disabled={isLoading || $query.fetchStatus === 'fetching'} class="grid w-full max-w-[40rem] grid-cols-8 grid-rows-10 gap-3">
+			{#each new Array(120) as _, idx}
+				{@const isReserved = $query.data?.reservedSeats.includes(idx)}
+				{@const isSelected = selectedSeats.includes(idx)}
+				<button disabled={isReserved} on:click={() => toggleSeat(idx)} class="btn btn-primary h-full w-full {isSelected ? '' : 'btn-outline'}"
+					>💺</button
+				>
 			{/each}
-		</div>
+		</fieldset>
 	</div>
+
+	{#if selectedSeats.length > 0}
+		<div class="sticky bottom-0 flex items-center justify-around rounded-xl bg-zinc-900/55 p-6 backdrop-blur-xl">
+			<p>Total Price: {(selectedSeats.length * 65_000).toLocaleString('en')} IRT</p>
+			<button disabled={isLoading} on:click={() => reserveSeats()} class="btn btn-accent">Reserve</button>
+		</div>
+	{/if}
 </Container>
