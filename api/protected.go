@@ -39,7 +39,7 @@ func (a *API) GetTicket(ctx iris.Context) {
 }
 
 type GetTicketsResponse struct {
-	Tickets []sql.TicketSummary
+	Tickets []sql.TicketSummary `json:"tickets"`
 }
 
 func (a *API) GetTickets(ctx iris.Context) {
