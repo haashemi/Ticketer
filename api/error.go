@@ -2,14 +2,16 @@ package api
 
 type Error struct {
 	Message string `json:"message"`
-	Error   string `json:"error"`
+	Err     string `json:"error"`
 }
+
+func (e Error) Error() string { return e.Err }
 
 func NewError(msg string, err error) Error {
 	errX := Error{Message: msg}
 
 	if err != nil {
-		errX.Error = err.Error()
+		errX.Err = err.Error()
 	}
 
 	return errX
