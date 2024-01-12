@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as z from 'zod';
-	import { createForm } from 'felte';
-	import { validator } from '@felte/validator-zod';
-	import { ValidationMessage, reporter } from '@felte/reporter-svelte';
-	import ky, { HTTPError } from 'ky';
 	import { goto } from '$app/navigation';
+	import { ValidationMessage, reporter } from '@felte/reporter-svelte';
+	import { validator } from '@felte/validator-zod';
+	import { createForm } from 'felte';
+	import ky, { HTTPError } from 'ky';
+	import * as z from 'zod';
 
 	let loading: boolean = false;
 	let error: string | null = null;
@@ -33,7 +33,7 @@
 		<h1 class="text-2xl font-semibold">Welcome Back!</h1>
 
 		{#if error}
-			<div class="text-wrap w-full rounded-xl border border-red-500 bg-red-500/20 p-5">{error}</div>
+			<div class="w-full text-wrap rounded-xl border border-red-500 bg-red-500/20 p-5">{error}</div>
 		{/if}
 
 		<form use:form class="w-full">

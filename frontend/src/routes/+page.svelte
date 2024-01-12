@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Header from '$lib/Header.svelte';
 	import Container from '$lib/Container.svelte';
-	import type { PageData } from './$types';
+	import Header from '$lib/Header.svelte';
 	import { msToTime } from '$lib/utils';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 </script>
