@@ -1,12 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Container from '$lib/Container.svelte';
 	import Header from '$lib/Header.svelte';
-	import moment from 'moment';
-	import type { PageData } from './$types';
-	import * as z from 'zod';
 	import { createQuery } from '@tanstack/svelte-query';
 	import ky from 'ky';
-
+	import moment from 'moment';
+	import * as z from 'zod';
+	import type { PageData } from './$types';
 	export let data: PageData;
 
 	let currentDate: Date = getDateAfter(1);
@@ -24,8 +24,22 @@
 		refetchInterval: 30_000,
 	});
 
-	function reserveSeats() {
-		// ky.post("/tickets/reserve", )
+	async function reserveSeats() {
+		isLoading = true;
+
+		const resp = await ky
+			.post('/api/profile/tickets/reserve', {
+				json: {
+					movieId: data.id,
+					forYear: currentDate.getFullYear(),
+					forMonth: currentDate.getMonth() + 1,
+					forDay: currentDate.getDate(),
+					seats: selectedSeats,
+				},
+			})
+			.json<{ ticketId: number }>();
+
+		goto('/ticket/' + resp.ticketId);
 	}
 
 	function getDateAfter(day: number): Date {
@@ -50,8 +64,6 @@
 			selectedSeats = [...selectedSeats, seatId];
 		}
 	}
-
-	$: console.log(selectedSeats);
 </script>
 
 <Header />
