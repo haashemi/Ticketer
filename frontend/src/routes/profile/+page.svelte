@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Container from '$lib/Container.svelte';
-	import moment from 'moment';
 	import Header from '$lib/Header.svelte';
 	import { createQuery } from '@tanstack/svelte-query';
-	import * as z from 'zod';
 	import ky from 'ky';
+	import moment from 'moment';
+	import * as z from 'zod';
 
 	const schema = z.object({
 		tickets: z.array(
@@ -12,6 +12,7 @@
 				movieID: z.number(),
 				ticketID: z.number(),
 				movieName: z.string(),
+				premiereDate: z.string().datetime(),
 				premiereTime: z.number(),
 			}),
 		),
@@ -49,7 +50,7 @@
 					<div class="flex h-20 w-full justify-between rounded-xl border border-zinc-700 bg-zinc-800/75 p-3">
 						<div class="flex flex-col justify-around">
 							<p>{ticket.movieName}</p>
-							<p>{moment(new Date(ticket.premiereTime)).format('MMMM Do YYYY, HH:mm')}</p>
+							<p>{moment(ticket.premiereDate).format('MMMM Do YYYY')}, {moment(ticket.premiereTime).format('HH:mm')}</p>
 						</div>
 
 						<a href="/ticket/{ticket.ticketID}" class="btn">View</a>
