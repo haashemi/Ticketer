@@ -63,7 +63,7 @@ func (a *API) SignIn(ctx iris.Context) {
 		return
 	}
 
-	user, err := sql.SelectUserByEmail(ctx, a.db, body.Email)
+	user, err := sql.SelectUserByEmail(a.db, body.Email)
 	if err != nil {
 		if err.Error() == "" {
 			ctx.StopWithJSON(iris.StatusForbidden, NewError("Invalid username or password", nil))
@@ -117,7 +117,7 @@ func (a *API) SignUp(ctx iris.Context) {
 		return
 	}
 
-	id, err := sql.InsertUser(ctx, a.db, body.FullName, body.Email, hex.EncodeToString(password))
+	id, err := sql.InsertUser(a.db, body.FullName, body.Email, hex.EncodeToString(password))
 	if err != nil {
 		// ToDo: find a better way, I have no idea why I'm doing it this way. I'm so sorry. forgive me please.
 		if err.Error() == `scanning one: scany: rows final error: ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)` {

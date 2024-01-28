@@ -16,7 +16,7 @@ type GetProfileResponse struct {
 func (a *API) GetProfile(ctx iris.Context) {
 	claims := ctx.Values().Get("claims").(*Claims)
 
-	u, err := sql.SelectUser(ctx, a.db, claims.UserID)
+	u, err := sql.SelectUser(a.db, claims.UserID)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch profile", err))
 		return
@@ -31,7 +31,7 @@ func (a *API) GetTicket(ctx iris.Context) {
 
 	tid, _ := ctx.Params().GetInt64("id")
 
-	ticket, err := sql.SelectTicket(ctx, a.db, tid, claims.UserID)
+	ticket, err := sql.SelectTicket(a.db, tid, claims.UserID)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch ticket info, please try again later.", err))
 		return
@@ -47,7 +47,7 @@ type GetTicketsResponse struct {
 func (a *API) GetTickets(ctx iris.Context) {
 	claims, _ := ctx.Values().Get("claims").(*Claims)
 
-	tickets, err := sql.SelectUserTickets(ctx, a.db, claims.UserID)
+	tickets, err := sql.SelectUserTickets(a.db, claims.UserID)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch your tickets, please try again later.", err))
 		return
@@ -57,11 +57,11 @@ func (a *API) GetTickets(ctx iris.Context) {
 }
 
 type PostReserveTicketsRequest struct {
-	MovieID  int64  `json:"movieId" validate:"required"`
-	ForYear  int    `json:"forYear" validate:"required"`
-	ForMonth int    `json:"forMonth" validate:"required"`
-	ForDay   int    `json:"forDay" validate:"required"`
-	Seats    []int8 `json:"seats" validate:"required"`
+	MovieID  int64   `json:"movieId" validate:"required"`
+	ForYear  int     `json:"forYear" validate:"required"`
+	ForMonth int     `json:"forMonth" validate:"required"`
+	ForDay   int     `json:"forDay" validate:"required"`
+	Seats    []uint8 `json:"seats" validate:"required"`
 }
 
 type PostReserveTicketsResponse struct {
@@ -78,21 +78,21 @@ func (a *API) PostReserveTickets(ctx iris.Context) {
 	claims, _ := ctx.Values().Get("claims").(*Claims)
 
 	var tid int64
-	err := a.db.Transaction(ctx, func(tx sql.Querier) error {
-		movie, err := sql.SelectMovie(ctx, tx, body.MovieID)
+	err := a.db.Transaction(func(tx sql.Queryer) error {
+		movie, err := sql.SelectMovie(tx, body.MovieID)
 		if err != nil {
 			return NewError("Failed to find the movie", err)
 		}
 
 		uu := time.Date(body.ForYear, time.Month(body.ForMonth), body.ForDay, 0, 0, 0, 0, time.UTC)
 
-		tid, err = sql.InsertTicket(ctx, tx, claims.UserID, movie.ID, uu, movie.PremiereTime.Time)
+		tid, err = sql.InsertTicket(tx, claims.UserID, movie.ID, uu, movie.PremiereTime)
 		if err != nil {
 			return NewError("Failed to get you a ticket", err)
 		}
 
 		for _, seat := range body.Seats {
-			err = sql.InsertSeat(ctx, tx, tid, seat)
+			err = sql.InsertSeat(tx, tid, seat)
 			if err != nil {
 				return NewError("Failed to reserve your seat", err)
 			}

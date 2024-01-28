@@ -1,14 +1,10 @@
 package sql
 
 import (
-	"context"
 	"database/sql"
 	"embed"
-	"encoding/json"
 
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 )
@@ -16,10 +12,9 @@ import (
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
-type Querier interface {
-	Exec(ctx context.Context, sql string, arguments ...any) (commandTag pgconn.CommandTag, err error)
-	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
-	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+type Queryer interface {
+	sqlx.Queryer
+	Exec(query string, args ...any) (sql.Result, error)
 }
 
 func Migrate(connString string) error {
@@ -41,7 +36,3 @@ func Migrate(connString string) error {
 
 	return nil
 }
-
-type Time struct{ pgtype.Time }
-
-func (t *Time) MarshalJSON() ([]byte, error) { return json.Marshal(t.Microseconds / 1000) }
