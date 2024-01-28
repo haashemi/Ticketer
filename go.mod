@@ -10,7 +10,7 @@ require (
 	github.com/kataras/iris/v12 v12.2.8
 	github.com/lib/pq v1.10.10-0.20230707155734-3d613208bca2
 	github.com/pressly/goose/v3 v3.17.0
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
