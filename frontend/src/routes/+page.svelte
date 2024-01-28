@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from '$lib/Container.svelte';
 	import Header from '$lib/Header.svelte';
-	import { msToTime } from '$lib/utils';
+	import moment from 'moment';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -41,7 +41,7 @@
 					</h6>
 				</a>
 
-				<p class="px-3"><span class="text-sm opacity-50">Premieres At:</span> {msToTime(movie.premiereTime)}</p>
+				<p class="px-3"><span class="text-sm opacity-50">Premieres At:</span> {moment(movie.premiereTime).format('HH:mm')}</p>
 			</div>
 		{/each}
 	</div>

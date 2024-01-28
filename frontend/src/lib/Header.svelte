@@ -44,14 +44,14 @@
 		{:else if $profile.isSuccess}
 			<div class="flex gap-2">
 				<a href="/profile" class="btn btn-primary h-10 rounded-lg font-medium {loading && 'btn-disabled'}">{$profile.data.name}</a>
-				<button disabled={loading} class="btn btn-error btn-outline h-10 rounded-lg font-medium" on:click={logout}>
+				<button disabled={loading} class="btn btn-outline btn-error h-10 rounded-lg font-medium" on:click={logout}>
 					<Icon src={FiLogOut} size="1.25rem" title="Logout icon" /></button
 				>
 			</div>
 		{:else if $profile.isError}
 			<div class="flex gap-2">
-				<a href="/signup" class="btn btn-ghost min-h-10 h-10 font-medium">Sign Up</a>
-				<a href="/signin" class="btn btn-primary min-h-10 h-10 font-medium">Sign In</a>
+				<a href="/signup" class="btn btn-ghost h-10 min-h-10 font-medium">Sign Up</a>
+				<a href="/signin" class="btn btn-primary h-10 min-h-10 font-medium">Sign In</a>
 			</div>
 		{/if}
 	</header>

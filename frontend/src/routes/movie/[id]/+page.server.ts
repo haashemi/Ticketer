@@ -1,7 +1,7 @@
-import ky from 'ky';
-import type { PageServerLoad } from './$types';
-import * as z from 'zod';
 import { API_HOST } from '$env/static/private';
+import ky from 'ky';
+import * as z from 'zod';
+import type { PageServerLoad } from './$types';
 
 const schema = z.object({
 	id: z.number(),
@@ -10,7 +10,7 @@ const schema = z.object({
 	genres: z.array(z.string()),
 	fromDate: z.coerce.date(), // todo: date
 	toDate: z.coerce.date(), // todo: date
-	premiereTime: z.number(), // todo: date
+	premiereTime: z.string().datetime({ offset: true }), // todo: date
 });
 
 export const load: PageServerLoad = async ({ params }) => {

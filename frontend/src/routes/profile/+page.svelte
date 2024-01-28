@@ -13,7 +13,7 @@
 				ticketID: z.number(),
 				movieName: z.string(),
 				premiereDate: z.string().datetime(),
-				premiereTime: z.number(),
+				premiereTime: z.string().datetime({ offset: true }),
 			}),
 		),
 	});

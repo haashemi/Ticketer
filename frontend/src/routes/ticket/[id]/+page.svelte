@@ -14,7 +14,7 @@
 		movieGenres: z.array(z.string()),
 		reservedAt: z.string().datetime({ offset: true, precision: 6 }),
 		premiereDate: z.string().datetime(),
-		premiereTime: z.number(),
+		premiereTime: z.string().datetime({ offset: true }),
 		reservedSeats: z.array(z.number()),
 	});
 

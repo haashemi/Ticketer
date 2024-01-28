@@ -1,14 +1,14 @@
-import ky from 'ky';
-import type { PageServerLoad } from './$types';
-import * as z from 'zod';
 import { API_HOST } from '$env/static/private';
+import ky from 'ky';
+import * as z from 'zod';
+import type { PageServerLoad } from './$types';
 
 const schema = z.object({
 	movies: z.array(
 		z.object({
 			id: z.number(),
 			name: z.string(),
-			premiereTime: z.number(),
+			premiereTime: z.string().datetime({ offset: true }),
 		}),
 	),
 });
