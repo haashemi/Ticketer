@@ -2,7 +2,7 @@
 
 A dead simple ticket service web app. Made in about a month from scratch as a university project.
 
-[Home Page](./screenshots/1-home.png)
+![Home Page](./screenshots/1-home.png)
 
 > More screenshots are [here](./screenshots)
 
