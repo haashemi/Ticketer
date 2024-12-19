@@ -1,0 +1,21 @@
+version: 3
+
+dotenv: [".env"]
+
+tasks:
+  sqlc:
+    cmds:
+      - docker run --rm -v .:/src -w /src sqlc/sqlc generate
+
+  # Run dev version of the backend
+  dev:
+    env:
+      CGO_ENABLED: 0
+    cmds:
+      - go build ./cmd/ticketer
+      - ticketer
+
+  # Run dev tools from docker compose
+  prepare:
+    cmds:
+      - docker compose up -d
