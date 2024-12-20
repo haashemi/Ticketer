@@ -5,17 +5,17 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/haashemi/Ticketer/internal/config"
-	"github.com/haashemi/Ticketer/sql"
+	"github.com/haashemi/Ticketer/internal/postgres"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/core/host"
 )
 
 type API struct {
-	db   *sql.Connection
+	db   *postgres.Connection
 	conf *config.Config
 }
 
-func Run(conf *config.Config, db *sql.Connection) {
+func Run(conf *config.Config, db *postgres.Connection) {
 	api := &API{db: db, conf: conf}
 
 	app := iris.Default()
@@ -43,16 +43,6 @@ func Run(conf *config.Config, db *sql.Connection) {
 		protected.Get("/tickets", api.GetTickets)
 		protected.Post("/tickets/reserve", api.PostReserveTickets)
 	}
-
-	// adminOnly := app.Party("/api/admin", api.doCheckAuth, api.doRefreshToken, api.doCheckAdmin)
-	// {
-	// 	adminOnly.Post("/movies", NotImplemented)
-	// 	adminOnly.Patch("/movies", NotImplemented)
-	// 	adminOnly.Delete("/movies", NotImplemented)
-
-	// 	adminOnly.Get("/users", NotImplemented)
-	// 	adminOnly.Patch("/users", NotImplemented)
-	// }
 
 	app.HandleDir("/static", iris.Dir("./static"))
 

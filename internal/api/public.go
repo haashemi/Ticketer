@@ -1,13 +1,13 @@
 package api
 
 import (
-	"github.com/haashemi/Ticketer/sql"
+	"github.com/haashemi/Ticketer/internal/postgres"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/kataras/iris/v12"
-	"github.com/lib/pq"
 )
 
 func (a *API) GetMovies(ctx iris.Context) {
-	movies, err := sql.SelectMovies(a.db)
+	movies, err := a.db.SelectMovies(ctx)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch movies list, please try again later.", err))
 		return
@@ -23,7 +23,7 @@ func (a *API) GetMovie(ctx iris.Context) {
 		return
 	}
 
-	movie, err := sql.SelectMovie(a.db, mid)
+	movie, err := a.db.SelectMovie(ctx, mid)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch movie, please try again later.", err))
 		return
@@ -33,7 +33,7 @@ func (a *API) GetMovie(ctx iris.Context) {
 }
 
 type GetMovieReservedSeatsResponse struct {
-	ReservedSeats pq.Int32Array `json:"reservedSeats"`
+	ReservedSeats []int16 `json:"reservedSeats"`
 }
 
 func (a *API) GetMovieReservedSeats(ctx iris.Context) {
@@ -49,7 +49,7 @@ func (a *API) GetMovieReservedSeats(ctx iris.Context) {
 		return
 	}
 
-	reservedSeats, err := sql.SelectMovieReservedSeats(a.db, mid, date)
+	reservedSeats, err := a.db.SelectMovieReservedSeats(ctx, postgres.SelectMovieReservedSeatsParams{MovieID: mid, PremiereDate: pgtype.Date{Time: date, Valid: true}})
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to fetch reserved seats, please try again later.", err))
 		return

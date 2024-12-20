@@ -7,9 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/uuid v1.4.0
 	github.com/jackc/pgx/v5 v5.5.1
-	github.com/jmoiron/sqlx v1.3.5
 	github.com/kataras/iris/v12 v12.2.8
-	github.com/lib/pq v1.10.10-0.20230707155734-3d613208bca2
 	github.com/pressly/goose/v3 v3.17.0
 	golang.org/x/crypto v0.21.0
 	gopkg.in/yaml.v3 v3.0.1

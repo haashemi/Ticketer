@@ -5,12 +5,11 @@ import (
 	"errors"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/haashemi/Ticketer/sql"
+	"github.com/haashemi/Ticketer/internal/postgres"
 	"github.com/kataras/iris/v12"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const TokenTime = 7 * 24 * time.Hour
@@ -63,7 +62,7 @@ func (a *API) SignIn(ctx iris.Context) {
 		return
 	}
 
-	user, err := sql.SelectUserByEmail(a.db, body.Email)
+	user, err := a.db.SelectUserByEmail(ctx, body.Email)
 	if err != nil {
 		if err.Error() == "" {
 			ctx.StopWithJSON(iris.StatusForbidden, NewError("Invalid username or password", nil))
@@ -88,7 +87,7 @@ func (a *API) SignIn(ctx iris.Context) {
 		return
 	}
 
-	token, err := a.newToken(user.ID, user.IsAdmin)
+	token, err := a.newToken(user.ID, false) //user.IsAdmin)
 	if err != nil {
 		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to sign-in, please try again later.", err))
 		return
@@ -117,7 +116,11 @@ func (a *API) SignUp(ctx iris.Context) {
 		return
 	}
 
-	id, err := sql.InsertUser(a.db, body.FullName, body.Email, hex.EncodeToString(password))
+	id, err := a.db.InsertUser(ctx, postgres.InsertUserParams{
+		FullName: body.FullName,
+		Email:    body.Email,
+		Password: hex.EncodeToString(password),
+	})
 	if err != nil {
 		// ToDo: find a better way, I have no idea why I'm doing it this way. I'm so sorry. forgive me please.
 		if err.Error() == `scanning one: scany: rows final error: ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)` {
@@ -194,17 +197,5 @@ func (a *API) doRefreshToken(ctx iris.Context) {
 
 	a.setAccessTokenCookie(ctx, tokenString)
 
-	ctx.Next()
-}
-
-func (a *API) doCheckAdmin(ctx iris.Context) {
-	claims, ok := ctx.Values().Get("claims").(*Claims)
-	if !ok {
-		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Token check failed.", ErrClaimsNotInContext))
-		return
-	} else if claims.IsAdmin {
-		ctx.StopWithJSON(iris.StatusForbidden, NewError("Insufficient permissions.", ErrNotAdmin))
-		return
-	}
 	ctx.Next()
 }
