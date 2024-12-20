@@ -5,7 +5,7 @@ create table if not exists tickets (
     movie_id        int8            not null                            ,
     reserved_at     timestamptz     not null    default now()           ,
     premiere_date   date            not null                            ,
-    premiere_time   timetz          not null                            ,
+    premiere_time   timestamptz     not null                            ,
 
     foreign key (user_id)   references users(id)                        ,
     foreign key (movie_id)  references movies(id)

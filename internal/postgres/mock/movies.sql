@@ -1,4 +1,4 @@
-insert into movies (name, movie_time, genres, from_date, to_date, premiere_time)
+insert into movies (name, movie_time, genres, premiere_from_date, premiere_to_date, premiere_time)
     values 
         ('Residency'                  , 65 , ARRAY ['Documentary']      , '2024-01-01', '2025-01-01', '08:00:00+03:30'),
         ('The Lost Of The Whale Shark', 62 , ARRAY ['Documentary']      , '2024-01-01', '2025-01-01', '09:05:00+03:30'),
