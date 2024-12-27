@@ -4,8 +4,6 @@ create table if not exists movies (
     name                text            not null    unique                  ,
     movie_time          int2            not null                            ,
     genres              text[]          not null                            ,
-    actresses           text[]                                              ,
-    description         varchar(512)                                        ,
     premiere_time       timestamptz     not null                            ,
     premiere_from_date  date            not null                            ,
     premiere_to_date    date            not null
