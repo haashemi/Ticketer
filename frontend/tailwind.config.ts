@@ -1,4 +1,6 @@
-/** @type {import('tailwindcss').Config} */
+import daisyui from 'daisyui'
+import { Config } from 'tailwindcss/types/config';
+
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
@@ -37,5 +39,5 @@ export default {
 		logs: true, // Shows info about daisyUI version and used config in the console when building your CSS
 	},
 
-	plugins: [require('daisyui')],
-};
+	plugins: [daisyui],
+} satisfies Config;
