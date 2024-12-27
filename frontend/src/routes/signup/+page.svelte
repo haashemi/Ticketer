@@ -43,7 +43,7 @@
 					<div class="label">
 						<span class="label-text">Full Name</span>
 					</div>
-					<input name="fullName" id="fullName" required type="text" placeholder="Reza Boghzi" class="input input-bordered w-full max-w-xs" />
+					<input name="fullName" id="fullName" required type="text" placeholder="Your Name" class="input input-bordered w-full max-w-xs" />
 
 					<ValidationMessage for="fullName" let:messages>
 						<ul class="label" aria-live="polite">

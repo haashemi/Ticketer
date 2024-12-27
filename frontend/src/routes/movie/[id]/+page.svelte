@@ -73,13 +73,13 @@
 	style="
 		background-image: 
 			linear-gradient(to top, var(--fallback-b1,oklch(var(--b1))) 0%, var(--fallback-b1,oklch(var(--b1) / 0.3))),
-			url('/static/movie/{data.id}.jpg');
+			url('/static/movie/{data.name}.jpg');
 	"
 />
 
 <Container class="font-poppins my-24 flex flex-col gap-5">
 	<div class="flex h-56 w-full items-center overflow-hidden rounded-xl bg-zinc-900/55 p-3 backdrop-blur-xl">
-		<img src="/static/movie/{data.id}.jpg" alt={data.name} class="aspect-[3/4] h-full rounded-xl" />
+		<img src="/static/movie/{data.name}.jpg" alt={data.name} class="aspect-[3/4] h-full rounded-xl" />
 		<div class="flex h-full flex-col justify-between p-5">
 			<h2 class="card-title whitespace-nowrap text-2xl italic text-white sm:text-3xl">{data.name}</h2>
 

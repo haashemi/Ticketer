@@ -11,7 +11,6 @@
 	const respSchema = z.object({
 		name: z.string(),
 		email: z.string().email(),
-		isAdmin: z.boolean(),
 	});
 
 	const profile = createQuery({

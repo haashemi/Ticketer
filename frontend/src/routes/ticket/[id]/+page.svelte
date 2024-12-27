@@ -35,7 +35,7 @@
 	<div class="grid gap-5 lg:grid-cols-2">
 		{#if $query.isSuccess}
 			<div class="flex h-56 w-full items-center overflow-hidden rounded-xl bg-zinc-900 p-3">
-				<img src="/static/movie/{$query.data.movieId}.jpg" alt={$query.data.movieName} class="aspect-[3/4] h-full rounded-xl" />
+				<img src="/static/movie/{$query.data.movieName}.jpg" alt={$query.data.movieName} class="aspect-[3/4] h-full rounded-xl" />
 				<div class="flex h-full flex-col justify-between p-5">
 					<h2 class="card-title whitespace-nowrap text-2xl italic text-white sm:text-3xl">{$query.data.movieName}</h2>
 

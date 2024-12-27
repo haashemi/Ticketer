@@ -8,9 +8,9 @@ const schema = z.object({
 	name: z.string(),
 	movieTime: z.number(),
 	genres: z.array(z.string()),
-	fromDate: z.coerce.date(), // todo: date
-	toDate: z.coerce.date(), // todo: date
-	premiereTime: z.string().datetime({ offset: true }), // todo: date
+	premiereFromDate: z.coerce.date(),
+	premiereToDate: z.coerce.date(),
+	premiereTime: z.string().datetime({ offset: true }).pipe(z.coerce.date()),
 });
 
 export const load: PageServerLoad = async ({ params }) => {

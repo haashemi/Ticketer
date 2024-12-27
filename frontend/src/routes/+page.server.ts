@@ -8,7 +8,7 @@ const schema = z.object({
 		z.object({
 			id: z.number(),
 			name: z.string(),
-			premiereTime: z.string().datetime({ offset: true }),
+			premiereTime: z.string().datetime({ offset: true }).pipe(z.coerce.date()),
 		}),
 	),
 });
