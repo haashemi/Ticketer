@@ -46,7 +46,7 @@ func Run(conf *config.Config, db *postgres.Connection) {
 
 	app.HandleDir("/static", iris.Dir("./static"))
 
-	target, _ := url.Parse("http://localhost:5173")
+	target, _ := url.Parse(conf.WebAddr)
 	proxy := host.ProxyHandler(target, nil)
 
 	app.OnErrorCode(iris.StatusNotFound, func(ctx iris.Context) { proxy.ServeHTTP(ctx.ResponseWriter(), ctx.Request()) })

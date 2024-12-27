@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	APIAddr  string `yaml:"api_addr"` // RestAPI's listen address
+	WebAddr  string `yaml:"web_addr"` // Frontend's address
 	Database string `yaml:"database"` // Postgres' connection url
 	JWTKey   string `yaml:"jwt_key"`  // JWT Tokens' key
 	Host     string `yaml:"host"`     // Website's hostname

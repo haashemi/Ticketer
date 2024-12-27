@@ -1,8 +1,9 @@
 # Rest API's listen address
-api_addr: localhost:4323
+api_addr: localhost:5552
+web_addr: http://127.0.0.1:5553
 
 # Postgres' database connection address
-database: postgres://postgres:postgres@localhost:5432/ticketer?sslmode=disable
+database: postgres://postgres:postgres@localhost:5551/ticketer?sslmode=disable
 
 # Use something like this for it: "pwgen -yns 32 1"
 jwt_key: .9zvx5S+"Sompb!6be>2c%V(syEk2rSJ
