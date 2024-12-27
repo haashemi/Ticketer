@@ -11,6 +11,31 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const insertMovie = `-- name: InsertMovie :exec
+insert into movies (name, movie_time, genres, premiere_time, premiere_from_date, premiere_to_date) values ($1, $2, $3, $4, $5, $6)
+`
+
+type InsertMovieParams struct {
+	Name             string             `json:"name"`
+	MovieTime        int16              `json:"movieTime"`
+	Genres           []string           `json:"genres"`
+	PremiereTime     pgtype.Timestamptz `json:"premiereTime"`
+	PremiereFromDate pgtype.Date        `json:"premiereFromDate"`
+	PremiereToDate   pgtype.Date        `json:"premiereToDate"`
+}
+
+func (q *Queries) InsertMovie(ctx context.Context, arg InsertMovieParams) error {
+	_, err := q.db.Exec(ctx, insertMovie,
+		arg.Name,
+		arg.MovieTime,
+		arg.Genres,
+		arg.PremiereTime,
+		arg.PremiereFromDate,
+		arg.PremiereToDate,
+	)
+	return err
+}
+
 const selectMovie = `-- name: SelectMovie :one
 select id, name, movie_time, genres, premiere_from_date, premiere_to_date, premiere_time from movies where id = $1
 `

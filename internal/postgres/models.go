@@ -13,8 +13,6 @@ type Movie struct {
 	Name             string             `json:"name"`
 	MovieTime        int16              `json:"movieTime"`
 	Genres           []string           `json:"genres"`
-	Actresses        []string           `json:"actresses"`
-	Description      *string            `json:"description"`
 	PremiereTime     pgtype.Timestamptz `json:"premiereTime"`
 	PremiereFromDate pgtype.Date        `json:"premiereFromDate"`
 	PremiereToDate   pgtype.Date        `json:"premiereToDate"`

@@ -1,3 +1,6 @@
+-- name: InsertMovie :exec
+insert into movies (name, movie_time, genres, premiere_time, premiere_from_date, premiere_to_date) values ($1, $2, $3, $4, $5, $6);
+
 -- name: SelectMovies :many
 select id, name, premiere_time from movies order by premiere_time asc;
 
