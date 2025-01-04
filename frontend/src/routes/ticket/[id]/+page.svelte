@@ -12,9 +12,9 @@
 		movieName: z.string(),
 		movieTime: z.number(),
 		movieGenres: z.array(z.string()),
-		reservedAt: z.string().datetime({ offset: true, precision: 6 }),
-		premiereDate: z.string().datetime(),
-		premiereTime: z.string().datetime({ offset: true }),
+		reservedAt: z.string().datetime({ offset: true, precision:6 }),
+		premiereDate: z.coerce.date(),
+		premiereTime: z.string().datetime({ offset: true }).pipe(z.coerce.date()),
 		reservedSeats: z.array(z.number()),
 	});
 
@@ -22,7 +22,7 @@
 		queryKey: ['ticket', $page.params.id],
 		queryFn: async () => {
 			const resp = await ky.get(`/api/profile/ticket/${$page.params.id}`).json();
-			return schema.parse(resp);
+			return schema.parseAsync(resp);
 		},
 	});
 </script>
