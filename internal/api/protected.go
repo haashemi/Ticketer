@@ -114,5 +114,11 @@ func (a *API) PostReserveTickets(ctx iris.Context) {
 		}
 	}
 
+	err = dbTx.Commit(ctx.Request().Context())
+	if err != nil {
+		ctx.StopWithJSON(iris.StatusInternalServerError, NewError("Failed to submit the data", err))
+		return
+	}
+
 	ctx.JSON(PostReserveTicketsResponse{TicketID: tid})
 }
