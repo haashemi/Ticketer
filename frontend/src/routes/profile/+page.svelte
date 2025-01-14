@@ -9,11 +9,11 @@
 	const schema = z.object({
 		tickets: z.array(
 			z.object({
-				movieID: z.number(),
-				ticketID: z.number(),
+				movieId: z.number(),
+				ticketId: z.number(),
 				movieName: z.string(),
-				premiereDate: z.string().datetime(),
-				premiereTime: z.string().datetime({ offset: true }),
+				premiereDate: z.coerce.date(),
+				premiereTime: z.string().datetime({ offset: true }).pipe(z.coerce.date()),
 			}),
 		),
 	});
@@ -22,14 +22,14 @@
 		queryKey: ['tickets'],
 		queryFn: async () => {
 			const data = await ky.get('/api/profile/tickets').json();
-			return schema.parse(data);
+			return schema.parseAsync(data);
 		},
 	});
 </script>
 
 <Header />
 
-<div class="fixed left-0 top-0 -z-10 h-screen w-full bg-gradient-to-b from-zinc-950 to-zinc-900" />
+<div class="fixed left-0 top-0 -z-10 h-screen w-full bg-gradient-to-b from-zinc-950 to-zinc-900"></div>
 
 <Container class="font-poppins relative mb-36 mt-20 flex flex-col gap-5">
 	<h1 class="mb-10 text-center">Purchased Tickets</h1>
@@ -37,7 +37,7 @@
 	{#if $query.isLoading}
 		<div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
 			{#each new Array(10) as _}
-				<div class="flex h-20 w-full animate-pulse justify-between rounded-xl border border-zinc-700 bg-zinc-800/75 p-3" />
+				<div class="flex h-20 w-full animate-pulse justify-between rounded-xl border border-zinc-700 bg-zinc-800/75 p-3"></div>
 			{/each}
 		</div>
 	{:else if $query.isSuccess}
@@ -53,7 +53,7 @@
 							<p>{moment(ticket.premiereDate).format('MMMM Do YYYY')}, {moment(ticket.premiereTime).format('HH:mm')}</p>
 						</div>
 
-						<a href="/ticket/{ticket.ticketID}" class="btn">View</a>
+						<a href="/ticket/{ticket.ticketId}" class="btn">View</a>
 					</div>
 				{/each}
 			</div>
