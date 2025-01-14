@@ -1,16 +1,33 @@
 name: ticketer-dev
 
 services:
+  backend:
+    container_name: t-backend
+    ports: [5552:5552]
+    volumes: [./static:/static, ./config.yaml:/config.yaml]
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  frontend:
+    container_name: t-frontend
+    ports: [5553:5553]
+    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args: [API_HOST=http://backend:5552]
+    environment: [API_HOST=http://backend:5552]
+
   postgres:
     container_name: t-postgres
     image: postgres:16
+    ports: [5551:5432]
+    volumes: [./.ticketer/postgres:/var/lib/postgresql/data]
+    restart: unless-stopped
+    shm_size: 128mb
     environment:
       - POSTGRES_DB=ticketer
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    ports:
-      - 5551:5432
-    volumes:
-      - ./.ticketer/postgres:/var/lib/postgresql/data
-    restart: always
-    shm_size: 128mb
