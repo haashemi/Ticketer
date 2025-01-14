@@ -29,7 +29,7 @@
 
 <Header />
 
-<div class="fixed left-0 top-0 -z-10 h-screen w-full bg-gradient-to-b from-zinc-950 to-zinc-900" />
+<div class="fixed left-0 top-0 -z-10 h-screen w-full bg-gradient-to-b from-zinc-950 to-zinc-900"></div>
 
 <Container class="font-poppins my-16 flex flex-col gap-5">
 	<div class="grid gap-5 lg:grid-cols-2">
@@ -56,8 +56,8 @@
 				</div>
 			</div>
 		{:else}
-			<div class="flex h-56 w-full animate-pulse rounded-xl bg-zinc-900 p-3" />
-			<div class="flex h-56 w-full animate-pulse rounded-xl bg-zinc-900 p-3" />
+			<div class="flex h-56 w-full animate-pulse rounded-xl bg-zinc-900 p-3"></div>
+			<div class="flex h-56 w-full animate-pulse rounded-xl bg-zinc-900 p-3"></div>
 		{/if}
 	</div>
 

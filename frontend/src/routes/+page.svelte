@@ -4,7 +4,11 @@
 	import moment from 'moment';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <Header />
@@ -17,7 +21,7 @@
 			linear-gradient(to top, var(--fallback-b1,oklch(var(--b1))), transparent),
 			url('/theater.png');
 	"
-/>
+></div>
 
 <Container class="font-poppins">
 	<!-- Header -->

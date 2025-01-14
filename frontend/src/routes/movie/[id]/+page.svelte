@@ -7,19 +7,24 @@
 	import moment from 'moment';
 	import * as z from 'zod';
 	import type { PageData } from './$types';
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	let currentDate: Date = getDateAfter(1);
-	let selectedSeats: number[] = [];
-	let isLoading: boolean = false;
+	let { data }: Props = $props();
+
+	let currentDate: Date = $state(getDateAfter(1));
+	let selectedSeats: number[] = $state([]);
+	let isLoading: boolean = $state(false);
 
 	const schema = z.object({ reservedSeats: z.array(z.number()) });
 
 	const query = createQuery({
+		// svelte-ignore state_referenced_locally
 		queryKey: ['reservedSeats', data.id, currentDate],
 		queryFn: async () => {
 			const resp = await ky.get(`/api/public/movies/${data.id}/reserved-seats/${moment(currentDate).format('YYYY/MM/DD')}`).json();
-			return schema.parse(resp);
+			return schema.parseAsync(resp);
 		},
 		refetchInterval: 30_000,
 	});
@@ -75,7 +80,7 @@
 			linear-gradient(to top, var(--fallback-b1,oklch(var(--b1))) 0%, var(--fallback-b1,oklch(var(--b1) / 0.3))),
 			url('/static/movie/{data.name}.jpg');
 	"
-/>
+></div>
 
 <Container class="font-poppins my-24 flex flex-col gap-5">
 	<div class="flex h-56 w-full items-center overflow-hidden rounded-xl bg-zinc-900/55 p-3 backdrop-blur-xl">
@@ -97,7 +102,7 @@
 		{#each new Array(7) as _, idx}
 			{@const day = getDateAfter(idx + 1)}
 			{@const isSelected = currentDate.getDate() === day.getDate()}
-			<button class="btn btn-primary {isSelected ? '' : 'btn-outline'}" on:click={() => selectDate(day)}>{moment(day).format('MMM Do')}</button>
+			<button class="btn btn-primary {isSelected ? '' : 'btn-outline'}" onclick={() => selectDate(day)}>{moment(day).format('MMM Do')}</button>
 		{/each}
 	</fieldset>
 
@@ -106,7 +111,7 @@
 			{#each new Array(120) as _, idx}
 				{@const isReserved = $query.data?.reservedSeats.includes(idx)}
 				{@const isSelected = selectedSeats.includes(idx)}
-				<button disabled={isReserved} on:click={() => toggleSeat(idx)} class="btn btn-primary h-full w-full {isSelected ? '' : 'btn-outline'}">
+				<button disabled={isReserved} onclick={() => toggleSeat(idx)} class="btn btn-primary h-full w-full {isSelected ? '' : 'btn-outline'}">
 					{idx + 1}
 				</button>
 			{/each}
@@ -116,7 +121,7 @@
 	{#if selectedSeats.length > 0}
 		<div class="sticky bottom-0 flex items-center justify-around rounded-xl bg-zinc-900/55 p-6 backdrop-blur-xl">
 			<p>Total Price: {(selectedSeats.length * 65_000).toLocaleString('en')} IRT</p>
-			<button disabled={isLoading} on:click={() => reserveSeats()} class="btn btn-accent">Reserve</button>
+			<button disabled={isLoading} onclick={() => reserveSeats()} class="btn btn-accent">Reserve</button>
 		</div>
 	{/if}
 </Container>

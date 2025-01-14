@@ -3,10 +3,10 @@
 	import ky from 'ky';
 	import { z } from 'zod';
 	//@ts-ignore
-	import Icon from 'svelte-icons-pack/Icon.svelte';
-	import FiLogOut from 'svelte-icons-pack/fi/FiLogOut';
+	import {Icon} from 'svelte-icons-pack';
+	import {FiLogOut} from 'svelte-icons-pack/fi';
 
-	let loading = false;
+	let loading = $state(false);
 
 	const respSchema = z.object({
 		name: z.string(),
@@ -37,13 +37,13 @@
 
 		{#if $profile.isLoading}
 			<div class="flex animate-pulse gap-2">
-				<div class="h-10 w-40 rounded-lg bg-zinc-800" />
-				<div class="h-10 w-10 rounded-lg bg-zinc-800" />
+				<div class="h-10 w-40 rounded-lg bg-zinc-800"></div>
+				<div class="h-10 w-10 rounded-lg bg-zinc-800"></div>
 			</div>
 		{:else if $profile.isSuccess}
 			<div class="flex gap-2">
 				<a href="/profile" class="btn btn-primary h-10 rounded-lg font-medium {loading && 'btn-disabled'}">{$profile.data.name}</a>
-				<button disabled={loading} class="btn btn-outline btn-error h-10 rounded-lg font-medium" on:click={logout}>
+				<button disabled={loading} class="btn btn-outline btn-error h-10 rounded-lg font-medium" onclick={logout}>
 					<Icon src={FiLogOut} size="1.25rem" title="Logout icon" /></button
 				>
 			</div>
