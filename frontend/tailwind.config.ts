@@ -1,5 +1,5 @@
 import daisyui from 'daisyui'
-import { Config } from 'tailwindcss/types/config';
+import type { Config } from 'tailwindcss/types/config';
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],

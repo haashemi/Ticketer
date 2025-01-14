@@ -20,8 +20,7 @@
 	const schema = z.object({ reservedSeats: z.array(z.number()) });
 
 	const query = createQuery({
-		// svelte-ignore state_referenced_locally
-		queryKey: ['reservedSeats', data.id, currentDate],
+		queryKey: ['reservedSeats', data.id, (() => currentDate)()],
 		queryFn: async () => {
 			const resp = await ky.get(`/api/public/movies/${data.id}/reserved-seats/${moment(currentDate).format('YYYY/MM/DD')}`).json();
 			return schema.parseAsync(resp);

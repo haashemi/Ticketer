@@ -21,7 +21,7 @@
 			loading = true;
 			ky.post('/api/auth/sign-up', { json: v })
 				.then(() => goto('/'))
-				.catch((e) => (e as HTTPError).response.json().then((v) => (error = v.message)))
+				.catch((e) => (e as HTTPError).response.json().then((v) => (error = (v as { message: string }).message)))
 				.finally(() => (loading = false));
 		},
 	});
@@ -45,15 +45,13 @@
 					</div>
 					<input name="fullName" id="fullName" required type="text" placeholder="Your Name" class="input input-bordered w-full max-w-xs" />
 
-					<ValidationMessage for="fullName" >
-						{#snippet children({ messages })}
-												<ul class="label" aria-live="polite">
-								{#each messages ?? [] as message}
-									<li class="label-text text-red-500">{message}</li>
-								{/each}
-							</ul>
-																	{/snippet}
-										</ValidationMessage>
+					<ValidationMessage let:messages for="fullName">
+						<ul class="label" aria-live="polite">
+							{#each messages ?? [] as message}
+								<li class="label-text text-red-500">{message}</li>
+							{/each}
+						</ul>
+					</ValidationMessage>
 				</label>
 
 				<label class="form-control w-full max-w-xs">
@@ -62,15 +60,13 @@
 					</div>
 					<input name="email" id="email" required type="email" placeholder="username@gmail.com" class="input input-bordered w-full max-w-xs" />
 
-					<ValidationMessage for="email" >
-						{#snippet children({ messages })}
-												<ul class="label" aria-live="polite">
-								{#each messages ?? [] as message}
-									<li class="label-text text-red-500">{message}</li>
-								{/each}
-							</ul>
-																	{/snippet}
-										</ValidationMessage>
+					<ValidationMessage let:messages for="email">
+						<ul class="label" aria-live="polite">
+							{#each messages ?? [] as message}
+								<li class="label-text text-red-500">{message}</li>
+							{/each}
+						</ul>
+					</ValidationMessage>
 				</label>
 
 				<label class="form-control w-full max-w-xs">
@@ -79,15 +75,13 @@
 					</div>
 					<input name="password" id="password" required type="password" placeholder="********" class="input input-bordered w-full max-w-xs" />
 
-					<ValidationMessage for="password" >
-						{#snippet children({ messages })}
-												<ul class="label" aria-live="polite">
-								{#each messages ?? [] as message}
-									<li class="label-text text-red-500">{message}</li>
-								{/each}
-							</ul>
-																	{/snippet}
-										</ValidationMessage>
+					<ValidationMessage let:messages for="password">
+						<ul class="label" aria-live="polite">
+							{#each messages ?? [] as message}
+								<li class="label-text text-red-500">{message}</li>
+							{/each}
+						</ul>
+					</ValidationMessage>
 				</label>
 
 				<div class="flex justify-end">
