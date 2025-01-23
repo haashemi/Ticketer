@@ -7,6 +7,7 @@
 	import moment from 'moment';
 	import * as z from 'zod';
 	import type { PageData } from './$types';
+	import { useProfile } from '$lib/profile';
 	interface Props {
 		data: PageData;
 	}
@@ -16,6 +17,9 @@
 	let currentDate: Date = $state(getDateAfter(1));
 	let selectedSeats: number[] = $state([]);
 	let isLoading: boolean = $state(false);
+
+	const profile = useProfile();
+	const isLoggedIn = $derived($profile.isSuccess);
 
 	const schema = z.object({ reservedSeats: z.array(z.number()) });
 
@@ -119,8 +123,13 @@
 
 	{#if selectedSeats.length > 0}
 		<div class="sticky bottom-0 flex items-center justify-around rounded-xl bg-zinc-900/55 p-6 backdrop-blur-xl">
-			<p>Total Price: {(selectedSeats.length * 65_000).toLocaleString('en')} IRT</p>
-			<button disabled={isLoading} onclick={() => reserveSeats()} class="btn btn-accent">Reserve</button>
+			{#if isLoggedIn}
+				<p>Total Price: {(selectedSeats.length * 65_000).toLocaleString('en')} IRT</p>
+				<button disabled={isLoading} onclick={() => reserveSeats()} class="btn btn-accent">Reserve</button>
+			{:else}
+				<p>Please sign-in to purchase the tickets!</p>
+				<a href="/signin" class="btn btn-primary h-10 min-h-10 font-medium">Sign In</a>
+			{/if}
 		</div>
 	{/if}
 </Container>
