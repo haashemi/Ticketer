@@ -4,7 +4,7 @@ services:
   backend:
     container_name: t-backend
     ports: [5552:5552]
-    volumes: [./static:/static, ./config.yaml:/config.yaml]
+    volumes: [./static:/static, ./config.docker.yaml:/config.yaml]
     restart: unless-stopped
     build:
       context: .
