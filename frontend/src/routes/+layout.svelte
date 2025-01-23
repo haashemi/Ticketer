@@ -20,6 +20,11 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Ticketer</title>
+	<meta name="description" content="A simple movie ticket e-commerce website" />
+</svelte:head>
+
 <QueryClientProvider client={queryClient}>
 	<div class="min-h-screen">
 		{@render children?.()}
