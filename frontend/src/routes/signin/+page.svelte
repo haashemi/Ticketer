@@ -5,9 +5,12 @@
 	import { createForm } from 'felte';
 	import ky, { HTTPError } from 'ky';
 	import * as z from 'zod';
+	import { useQueryClient } from '@tanstack/svelte-query';
 
 	let loading: boolean = $state(false);
 	let error: string | null = $state(null);
+
+	const queryClient = useQueryClient();
 
 	const schema = z.object({
 		email: z.string().email(),
@@ -22,6 +25,9 @@
 				.then(() => goto('/'))
 				.catch((e) => (e as HTTPError).response.json().then((v) => (error = (v as { message: string }).message)))
 				.finally(() => (loading = false));
+		},
+		onSuccess: async () => {
+			await queryClient.refetchQueries({ queryKey: ['profile'] });
 		},
 	});
 </script>
