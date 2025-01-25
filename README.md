@@ -58,3 +58,32 @@ docker exec t-backend /mock
 ### 4. You're done!
 
 Now open up the backend host (`localhost:5552`) in your browser and explore the project!
+
+## Folder structure
+
+```
+.
+├── /_screenshots # Showcase screenshots
+├── cmd           # go applications
+│   ├── mock      # Mocks the database
+│   └── ticketer  # Main API application
+├── frontend      # All svelte app codes
+├── /internal     #
+│   ├── api       # API app called by /cmd/ticketer
+│   ├── config    # config file loader
+│   ├── mock      # Mock app called by /cmd/mock
+│   └── postgres  # Database query and migration management
+│       ├── /migrations # DB Migration files
+│       ├── /queries    # DB Queries (to be used by sqlc)
+│       └── postgres.go # DB Connect and Migrate methods
+├── /static       # Static file assets
+├── go.mod        # Golang dependency
+├── go.sum        # Golang dependency
+├── LICENSE
+├── compose.yaml  # Docker compose file
+├── config.yaml   # Go app config file
+├── Dockerfile    # Backend's Docker file
+├── README.md
+├── sqlc.yaml     # DB Code generator
+└── Taskfile.yml  # A set of commands
+```
