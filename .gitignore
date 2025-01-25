@@ -1,4 +1,5 @@
 /.ticketer
 config*.yaml
 !config.example.yaml
-/Ticketer*
+/ticketer*
+/mock*
