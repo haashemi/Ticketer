@@ -1,4 +1,4 @@
-FROM golang:1.23.0-alpine3.20 AS build-stage
+FROM golang:1.25 AS build-stage
 
 # Set destination for COPY
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /mock ./cmd/mock
 RUN CGO_ENABLED=0 GOOS=linux go build -o /ticketer ./cmd/ticketer
 
 # Deploy
-FROM alpine:3.20
+FROM alpine:latest
 
 WORKDIR /
 
