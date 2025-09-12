@@ -1,21 +1,17 @@
-import eslintPluginSvelte from 'eslint-plugin-svelte';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import * as svelteParser from 'svelte-eslint-parser';
-import * as typescriptParser from '@typescript-eslint/parser';
+import { defineConfig } from "@fullstacksjs/eslint-config";
+import eslintPluginSvelte from "eslint-plugin-svelte";
+import ts from "typescript-eslint";
 
-export default [
-	...eslintPluginSvelte.configs['flat/recommended'],
-	eslintConfigPrettier,
-	{
-		files: ['**/*.svelte', '**/*.ts', '**/*.js'],
-		languageOptions: {
-			parser: svelteParser,
-			parserOptions: {
-				parser: typescriptParser,
-				project: './tsconfig.json',
-				extraFileExtensions: ['.svelte'],
-			},
-		},
-		ignores: ['./.svelte-kit/**/*', './node_modules/**/*'],
-	},
-];
+import svelteConfig from "./svelte.config.js";
+
+export default defineConfig({}, ...eslintPluginSvelte.configs.recommended, {
+  files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
+  languageOptions: {
+    parserOptions: {
+      projectService: true,
+      extraFileExtensions: [".svelte"],
+      parser: ts.parser,
+      svelteConfig,
+    },
+  },
+});
